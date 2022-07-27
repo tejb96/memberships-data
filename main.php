@@ -3,8 +3,8 @@
 Plugin Name: Membership Data
 Plugin URI: https://www.adralberta.com/
 Description: Displays a table of the memberships summary
-Author: HarinSBal
-Version: 1.0
+Authors: HarinSBal
+Version: 2.0
 */
 
 require_once(dirname(__FILE__)."/membershipDashboardTable.php");
