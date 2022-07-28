@@ -65,7 +65,7 @@ function export_membership_data_submenu_page_hsb() {
     //if memberships are changed fix their names and ids here, above and in the exportSbmenuPage.php file. In that file it is hardcoded to check for organizational memberships:
     $memberships_adria = array(1914=>'Associate', 3966=>'Directory', 1915=>'Full', 1916=>'LINK', 1917=>'Organizational');
     //wc product ids for each membership. New first and then the renewal.
-    $memberships_wc_adria = array('Full'=>array(2574), 'LINK'=>array(3151), 'Organizational'=>array(4220), 'Associate'=>array(3138));
+    $memberships_wc_adria = array('Full'=>2574, 'LINK'=>3151, 'Organizational'=>4220, 'Associate'=>3138);
 
     render_export_submenu_page_html_hsb($memberships_adria, $memberships_wc_adria);
 }
