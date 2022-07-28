@@ -54,7 +54,7 @@
         }
     }
 
-    function render_export_submenu_page_html_hsb($memberships_mepr, $memberships_wc){
+    function render_export_menu_page_html_hsb($memberships_mepr, $memberships_wc){
         
 ?>
     <div class="align-center-hsb">
