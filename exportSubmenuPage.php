@@ -26,9 +26,9 @@
 
             $prefix_hsb = $wpdb->prefix;
         
-            $header_membership_hsb=array('Product Id:', $membership, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-            $header_new_hsb=array('NEW/EXISTING', 'PURCHASES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-            $header_hsb=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
+            // $header_membership_hsb=array('Product Id:', $membership, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+            // $header_new_hsb=array('NEW/EXISTING', 'PURCHASES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+            // $header_hsb=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
 
             $fp = fopen("php://output", "w");
             header("Content-type: text/csv");
@@ -36,18 +36,19 @@
             header( "Content-disposition: filename=".$filename.".csv");
             header("Pragma: no-cache");
             header("Expires: 0");
-
+            
             $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb);            
-            $result_new = $wpdb->get_results($query_new, ARRAY_A);    
-                            
-            fputcsv( $fp, $header_membership_hsb);
-            fputcsv( $fp, $header_new_hsb);
-            fputcsv( $fp, $header_hsb);
-            if(!empty($result_new)){
-                foreach ( $result_new as $row ) {
-                    fputcsv( $fp, $row );
-                }
-            }
+            // $result_new = $wpdb->get_results($query_new, ARRAY_A);    
+            $arrt = array($query_new);
+                fputcsv($fp, $arrt);    
+            // fputcsv( $fp, $header_membership_hsb);
+            // fputcsv( $fp, $header_new_hsb);
+            // fputcsv( $fp, $header_hsb);
+            // if(!empty($result_new)){
+            //     foreach ( $result_new as $row ) {
+            //         fputcsv( $fp, $row );
+            //     }
+            // }
 
          
             exit;
@@ -96,8 +97,10 @@
                 </tr>
             </table>
             <input type="submit" name="download_quarterly_report_hsb" class="button-primary" value="Export Report" />
-        </form>
+        </form>   
+              
     </div>
+    
 <?php
     }
 ?>
