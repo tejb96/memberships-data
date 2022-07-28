@@ -39,7 +39,7 @@
 
             $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb);            
             $result_new = $wpdb->get_results($query_new, ARRAY_A);    
-                              
+                            
             fputcsv( $fp, $header_membership_hsb);
             fputcsv( $fp, $header_new_hsb);
             fputcsv( $fp, $header_hsb);
@@ -54,7 +54,7 @@
         }
     }
 
-    function render_export_menu_page_html_hsb($memberships_mepr, $memberships_wc){
+    function render_export_menu_page_html_hsb($memberships_wc){
         
 ?>
     <div class="align-center-hsb">
