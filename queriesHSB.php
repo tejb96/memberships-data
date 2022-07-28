@@ -272,8 +272,8 @@ WHERE
     AND oi.order_item_type = 'line_item' 
     AND oim.meta_key = '_product_id' 
     AND oim.meta_value = {$prod_id}
-    AND DATE(pm2_fil.paid_date) >= STR_TO_DATE('2019-01-01', '%Y-%m-%d')
-    AND DATE(pm2_fil.paid_date) <= STR_TO_DATE('2022-07-20', '%Y-%m-%d')
+    AND DATE(pm2_fil.paid_date) >= STR_TO_DATE('{$from_date}', '%Y-%m-%d')
+    AND DATE(pm2_fil.paid_date) <= STR_TO_DATE('{$to_date}', '%Y-%m-%d')
 ORDER BY
     pm2_fil.paid_date ASC";
 }
