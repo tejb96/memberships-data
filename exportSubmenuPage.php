@@ -11,21 +11,22 @@
                 $to_date_hsb= date('Y-m-d');
             }
 
-            $membership=explode(',', $_POST['membership_type_wc']);  
+            $membership=$_POST['membership_type_wc']; 
+
             if(empty($membership)){
                 $membership = array(0=>2574);
             }
 
             $filename=$_POST['file_name_hsb'];
             if(empty($filename)){
-                $filename = $membership[0].'-Report_'.$from_date_hsb.'_to_'.$to_date_hsb;
+                $filename = $membership.'-Report_'.$from_date_hsb.'_to_'.$to_date_hsb;
             }
 
             global $wpdb;
 
             $prefix_hsb = $wpdb->prefix;
         
-            $header_membership_hsb=array('Product Id:', $membership[0], NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+            $header_membership_hsb=array('Product Id:', $membership, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
             $header_new_hsb=array('NEW/EXISTING', 'PURCHASES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
             $header_hsb=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
 
@@ -36,7 +37,7 @@
             header("Pragma: no-cache");
             header("Expires: 0");
 
-            $query_new = get_wc_export_query_hsb($prefix_hsb, $membership[0], $from_date_hsb, $to_date_hsb);            
+            $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb);            
             $result_new = $wpdb->get_results($query_new, ARRAY_A);    
                               
             fputcsv( $fp, $header_membership_hsb);
@@ -57,10 +58,7 @@
         
 ?>
     <div class="align-center-hsb">
-    <hr>
-        
-          
-        <hr>
+    <hr>      
         <form method="post" id="download_quarterly_report_form_hsb" action="">
             <h3>Export membership related transactional data for specific time periods:</h3>
             <table class="form-table-hsb" id="date-range-table-hsb">
@@ -69,9 +67,8 @@
                     <td>
                         <select name="membership_type_wc" id="membership-type-wc">
                             <?php 
-                            foreach($memberships_wc as $membership_id=>$membership){
-                                $values = implode(',',$membership);
-                                echo '<option value="'.$values.'">'.$membership_id.'</option>';
+                            foreach($memberships_wc as $membership_id=>$membership){                                
+                                echo '<option value="'.$membership.'">'.$membership_id.'</option>';
                             }
                             ?>
                         </select>
