@@ -7,26 +7,18 @@ Authors: HarinSBal
 Version: 2.0
 */
 
-require_once(dirname(__FILE__)."/membershipDashboardTable.php");
 require_once(dirname(__FILE__)."/exportSubmenuPage.php");
 
 add_action('admin_menu', "add_admin_menu_item_membership_summary_plugin_hsb");
 
 function add_admin_menu_item_membership_summary_plugin_hsb(){
-    add_menu_page( 'Memberships Summary Table', //page title
+    add_menu_page( 'WooMemberships', //page title
     'Membership Data', //menu title
     'manage_options', //capability
     'membership_summary_plugin_hsb', //parent slug
-    'create_and_display_memberships_summary_table_hsb', //callback
+    'export_membership_data_submenu_page_hsb', //callback
     'dashicons-portfolio' //icon
-    );
-    add_submenu_page( 'membership_summary_plugin_hsb', //parent slug
-    'Memberships Summary Table', //page title
-    'Membership Data', //menu title
-    'manage_options', //capability
-    'membership_summary_plugin_hsb', //submenu slug
-    'create_and_display_memberships_summary_table_hsb' //callback
-    );
+    );   
     add_submenu_page( 'membership_summary_plugin_hsb', 
     'Export membership data',
     'Export Membership Data', 
