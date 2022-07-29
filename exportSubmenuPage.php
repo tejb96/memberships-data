@@ -1,8 +1,32 @@
 <?php 
     require_once(dirname(__FILE__)."/queriesHSB.php");
+
+    function create_csv($memb, $fname, $result){
+        // creates the headers for the excel file
+        $header_membership_type=array('Product Id:', $memb, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        $header_purchase_type=array('NEW', 'PURCHASES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        $header_data=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
+        // setting http headers 
+        $fp = fopen("php://output", "w");
+        header("Content-type: text/csv");
+        header("Content-disposition: csv" . date("Y-m-d") . ".csv");
+        header( "Content-disposition: filename=".$fname.".csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        // fills the excel file
+        fputcsv( $fp, $header_membership_type);
+        fputcsv( $fp, $header_purchase_type);
+        fputcsv( $fp, $header_data);
+        if(!empty($result)){
+            foreach ( $result as $row ) {
+                fputcsv( $fp, $row );
+            }
+        }
+    }
     
     function membership_data_download_csv_hsb(){
-      
+
+        // Retrieves/fills dates
         if (isset($_POST['download_quarterly_report_hsb'])) {
             $from_date_hsb=$_POST['qreport_from_date_hsb'];
             $to_date_hsb=$_POST['qreport_to_date_hsb'];
@@ -10,13 +34,13 @@
                 $from_date_hsb=date('Y-m-d', strtotime('-1 months'));
                 $to_date_hsb= date('Y-m-d');
             }
-
+            // Retrieves membership type selected
             $membership=$_POST['membership_type_wc']; 
 
             if(empty($membership)){
                 $membership = array(0=>2574);
             }
-
+            // sets file name
             $filename=$_POST['file_name_hsb'];
             if(empty($filename)){
                 $filename = $membership.'-Report_'.$from_date_hsb.'_to_'.$to_date_hsb;
@@ -26,34 +50,19 @@
 
             $prefix_hsb = $wpdb->prefix;
         
-            $header_membership_hsb=array('Product Id:', $membership, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-            $header_new_hsb=array('NEW/EXISTING', 'PURCHASES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-            $header_hsb=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
-
-            $fp = fopen("php://output", "w");
-            header("Content-type: text/csv");
-            header("Content-disposition: csv" . date("Y-m-d") . ".csv");
-            header( "Content-disposition: filename=".$filename.".csv");
-            header("Pragma: no-cache");
-            header("Expires: 0");
+           
 
             $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb);            
             $result_new = $wpdb->get_results($query_new, ARRAY_A);    
                             
-            fputcsv( $fp, $header_membership_hsb);
-            fputcsv( $fp, $header_new_hsb);
-            fputcsv( $fp, $header_hsb);
-            if(!empty($result_new)){
-                foreach ( $result_new as $row ) {
-                    fputcsv( $fp, $row );
-                }
-            }
-
+            create_csv($membership, $filename, $result_new);
          
             exit;
         }
     }
 
+       
+    
     function render_export_menu_page_html_hsb($memberships_wc){
         
 ?>
