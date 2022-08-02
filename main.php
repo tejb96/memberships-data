@@ -3,7 +3,7 @@
 Plugin Name: Membership Data
 Plugin URI: https://www.adralberta.com/
 Description: Displays a table of the memberships summary
-Authors: HarinSBal
+Authors: HarinSBal, Tej
 Version: 2.0
 */
 
@@ -35,9 +35,9 @@ function enqueue_style_table_page_hsb($hook){
 function export_membership_data_submenu_page_hsb() {
 
     //wc product ids for each membership. 
-    $memberships_wc_adria = array('Full'=>2574, 'LINK'=>3151, 'Organizational'=>4220, 'Associate'=>3138);
+    $product_id_map = array('Full'=>2574, 'LINK'=>3151, 'Organizational'=>4220, 'Associate'=>3138);
 
-    render_export_menu_page_html_hsb($memberships_wc_adria);
+    render_export_menu_page_html_hsb($product_id_map);
 }
 
 add_action('admin_init','membership_data_download_csv_hsb');
