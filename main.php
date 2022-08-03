@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Membership Data
+Plugin Name: Memberships Data
 Plugin URI: https://www.adralberta.com/
-Description: Displays a table of the memberships summary
+Description: Exports membership data
 Authors: HarinSBal, Tej
 Version: 2.0
 */
