@@ -4,14 +4,14 @@ function get_wc_export_query_hsb($the_prefix, $prod_id, $from_date, $to_date, $c
     
     
     if(0!=$cost){
-        $where_clause = "AND pm12._order_total = {$cost}";
+        $where_clause = "AND pm12._order_total = '{$cost}'";
     }
     elseif(0!= $not_equal_cost && 0 != $not_equal_cost2){
-        $where_clause = "AND pm12._order_total <> {$not_equal_cost}
-        AND pm12._order_total <> {$not_equal_cost2}";
+        $where_clause = "AND pm12._order_total <> '{$not_equal_cost}'
+        AND pm12._order_total <> '{$not_equal_cost2}'";
     }
     elseif(0===$not_equal_cost && 0 != $not_equal_cost2){
-        $where_clause = "AND pm12._order_total <> {$not_equal_cost2}";
+        $where_clause = "AND pm12._order_total <> '{$not_equal_cost2}'";
     }
     
     return "SELECT

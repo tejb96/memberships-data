@@ -1,8 +1,7 @@
 <?php 
     require_once(dirname(__FILE__)."/queriesHSB.php");
 
-
-   
+ 
     function create_csv($memb, $result,$fp, $costt, $type){
         // creates the headers for the excel file
         $header_membership_type=array('Product Id:', $memb, 'Order Total', $costt, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -67,19 +66,21 @@
                 $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, $price_tsb, 0, 0);            
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
                 create_csv($membership, $result_new,$fp, $price_tsb, $purchase_type[$price_tsb]);
-                
+               
             }
 
             if(count($cost)===2){
                 $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, $cost[0], $cost[1]);
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
                 create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);
+                
             }  
             
             elseif(count($cost)===1){
                 $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, 0, $cost[0]);
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
                 create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);
+               
             }
          
             exit;
