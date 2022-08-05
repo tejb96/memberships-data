@@ -62,22 +62,22 @@
             $purchase_type = array(393.75 => 'New', 78.75 => 'New/Renewal', 525.00 => 'New/Renewal', 183.75=>'New', 341.25 => 'Renewal', 131.25 => 'Renewal', 0=>'Incorrect Cost');
             
             
-            foreach($cost as $value){
+            foreach($cost as $price_tsb){
 
-                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, $value );            
+                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, $price_tsb, 0, 0);            
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
-                create_csv($membership, $result_new,$fp, $value, $purchase_type[$value]);
+                create_csv($membership, $result_new,$fp, $price_tsb, $purchase_type[$price_tsb]);
                 
             }
 
             if(count($cost)===2){
-                $query_new = get_wc_export_query2($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, $cost[0], $cost[1]);
+                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, $cost[0], $cost[1]);
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
                 create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);
             }  
             
             elseif(count($cost)===1){
-                $query_new = get_wc_export_query1($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, $cost[0]);
+                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, 0, $cost[0]);
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
                 create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);
             }

@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Memberships Data
+Plugin Name: Membership Data
 Plugin URI: https://www.adralberta.com/
 Description: Exports membership data
 Authors: HarinSBal, Tej
@@ -12,7 +12,7 @@ require_once(dirname(__FILE__)."/exportSubmenuPage.php");
 add_action('admin_menu', "add_admin_menu_item_membership_summary_plugin_hsb");
 
 function add_admin_menu_item_membership_summary_plugin_hsb(){
-    add_menu_page( 'WooMemberships', //page title
+    add_menu_page( 'Memberships Data', //page title
     'Membership Data', //menu title
     'manage_options', //capability
     'export_csv_submenuslug_hsb', //parent slug
