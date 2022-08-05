@@ -4,27 +4,14 @@ function get_wc_export_query_hsb($the_prefix, $prod_id, $from_date, $to_date, $c
     
     
     if(0!=$cost){
-        $where_clause = " p.post_type = 'shop_order' 
-        AND pm.meta_key = '_customer_user' 
-        AND p.post_status = 'wc-completed' 
-        AND oi.order_item_type = 'line_item' 
-        AND oim.meta_key = '_product_id' 
-        AND oim.meta_value = {$prod_id}
-        AND DATE(pm2_fil.paid_date) >= STR_TO_DATE('{$from_date}', '%Y-%m-%d')
-        AND DATE(pm2_fil.paid_date) <= STR_TO_DATE('{$to_date}', '%Y-%m-%d')
-        AND pm12._order_total = '{$cost}'";
+        $where_clause = "AND pm12._order_total = {$cost}";
     }
-    elseif(0!= $not_equal_cost || 0 != $not_equal_cost2){
-        $where_clause = " p.post_type = 'shop_order' 
-        AND pm.meta_key = '_customer_user' 
-        AND p.post_status = 'wc-completed' 
-        AND oi.order_item_type = 'line_item' 
-        AND oim.meta_key = '_product_id' 
-        AND oim.meta_value = {$prod_id}
-        AND DATE(pm2_fil.paid_date) >= STR_TO_DATE('{$from_date}', '%Y-%m-%d')
-        AND DATE(pm2_fil.paid_date) <= STR_TO_DATE('{$to_date}', '%Y-%m-%d')
-        AND pm12._order_total <> '{$not_equal_cost}'
-        AND pm12._order_total <> '{$not_equal_cost2}'";
+    elseif(0!= $not_equal_cost && 0 != $not_equal_cost2){
+        $where_clause = "AND pm12._order_total <> {$not_equal_cost}
+        AND pm12._order_total <> {$not_equal_cost2}";
+    }
+    elseif(0===$not_equal_cost && 0 != $not_equal_cost2){
+        $where_clause = "AND pm12._order_total <> {$not_equal_cost2}";
     }
     
     return "SELECT
@@ -291,7 +278,15 @@ LEFT JOIN(
 ) AS meta8
 ON
     u1.ID = meta8.user_id
-WHERE {$where_clause}
+WHERE   p.post_type = 'shop_order' 
+        AND pm.meta_key = '_customer_user' 
+        AND p.post_status = 'wc-completed' 
+        AND oi.order_item_type = 'line_item' 
+        AND oim.meta_key = '_product_id' 
+        AND oim.meta_value = {$prod_id}
+        AND DATE(pm2_fil.paid_date) >= STR_TO_DATE('{$from_date}', '%Y-%m-%d')
+        AND DATE(pm2_fil.paid_date) <= STR_TO_DATE('{$to_date}', '%Y-%m-%d')
+        {$where_clause}
    
 ORDER BY
     pm2_fil.paid_date ASC";

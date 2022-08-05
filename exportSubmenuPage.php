@@ -56,10 +56,10 @@
             header("Pragma: no-cache");
             header("Expires: 0");
 
-            $membership_costs = array(2574=>array(393.75, 341.25), 3151=>array(78.75), 4220=>array(525.00), 3138=>array(183.75, 131.25));
+            $membership_costs = array(2574=>array('393.75', '341.25'), 3151=>array('78.75'), 4220=>array('525.00'), 3138=>array('183.75', '131.25'));
             $cost = $membership_costs[$membership];
 
-            $purchase_type = array(393.75 => 'New', 78.75 => 'New/Renewal', 525.00 => 'New/Renewal', 183.75=>'New', 341.25 => 'Renewal', 131.25 => 'Renewal', 0=>'Incorrect Cost');
+            $purchase_type = array('393.75' => 'New', '78.75' => 'New/Renewal', '525.00' => 'New/Renewal', '183.75'=>'New', '341.25' => 'Renewal', '131.25' => 'Renewal', 0=>'Incorrect Cost');
             
             
             foreach($cost as $price_tsb){
