@@ -1,8 +1,6 @@
 <?php 
     require_once(dirname(__FILE__)."/queriesHSB.php");
-
  
-   
     
     function membership_data_download_csv_hsb(){
 

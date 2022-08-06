@@ -36,32 +36,13 @@ function get_wc_export_query_hsb($the_prefix, $prod_id, $from_date, $to_date, $c
     COALESCE(
         u1.user_email,
         pm4._billing_email
-    ) AS 'c',
-    COALESCE(
-        meta2.meta_value,
-        pm5._billing_address_1
-    ) AS 'd',
-    meta7.meta_value,
-    COALESCE(
-        meta3.meta_value,
-        pm6._billing_city
-    ) AS 'e',
-    COALESCE(
-        meta4.meta_value,
-        pm7._billing_state
-    ) AS 'f',
-    COALESCE(
-        meta5.meta_value,
-        pm8._billing_postcode
-    ) AS 'g',
-    COALESCE(
-        meta6.meta_value,
-        pm9._billing_country
-    ) AS 'h',
-    COALESCE(
-        meta8.meta_value,
-        pm10._billing_phone
-    ) AS 'i',
+    ) AS 'c',    
+    pm5._billing_address_1 AS 'd',
+    pm6._billing_city AS 'e',   
+    pm7._billing_state AS 'f',    
+    pm8._billing_postcode AS 'g',    
+    pm9._billing_country AS 'h',    
+    pm10._billing_phone AS 'i',
     pm2_fil.paid_date AS 'j',
     pm11._payment_method AS 'k',
     pm12._order_total AS 't'
@@ -208,76 +189,6 @@ LEFT JOIN(
     ) AS pm12
     ON
         pm.post_id=pm12.post_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'mepr-address-one'
-) AS meta2
-ON
-    u1.ID = meta2.user_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'mepr-address-city'
-) AS meta3
-ON
-    u1.ID = meta3.user_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'mepr-address-state'
-) AS meta4
-ON
-    u1.ID = meta4.user_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'mepr-address-zip'
-) AS meta5
-ON
-    u1.ID = meta5.user_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'mepr-address-country'
-) AS meta6
-ON
-    u1.ID = meta6.user_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'mepr-address-two'
-) AS meta7
-ON
-    u1.ID = meta7.user_id
-LEFT JOIN(
-    SELECT
-        *
-    FROM
-        {$the_prefix}usermeta
-    WHERE
-        meta_key = 'billing_phone'
-) AS meta8
-ON
-    u1.ID = meta8.user_id
 WHERE   p.post_type = 'shop_order' 
         AND pm.meta_key = '_customer_user' 
         AND p.post_status = 'wc-completed' 
