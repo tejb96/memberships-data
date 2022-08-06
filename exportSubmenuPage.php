@@ -2,6 +2,25 @@
     require_once(dirname(__FILE__)."/queriesHSB.php");
  
     
+    function create_csv($memb, $result,$fp, $costt, $type){
+        // creates the headers for the excel file
+        $header_membership_type=array('Product Id:', $memb, 'Order Total', $costt, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        $header_purchase_type=array($type, 'Purchases', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        $header_data=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
+        $header_space=array(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        // fills the excel file
+        fputcsv( $fp, $header_membership_type);
+        fputcsv( $fp, $header_purchase_type);
+        fputcsv( $fp, $header_data);        
+        if(!empty($result)){
+            foreach ( $result as $row ) {
+                fputcsv( $fp, $row );
+            }
+        }
+        fputcsv( $fp, $header_space);
+        fputcsv( $fp, $header_space);
+    }
+    
     function membership_data_download_csv_hsb(){
 
         // Retrieves/fills dates
@@ -27,52 +46,42 @@
             global $wpdb;
 
             $prefix_hsb = $wpdb->prefix;
+        
+            // setting http headers 
+            $fp = fopen("php://output", "w");
+            header("Content-type: text/csv");
+            header("Content-disposition: csv" . date("Y-m-d") . ".csv");
+            header( "Content-disposition: filename=".$filename.".csv");
+            header("Pragma: no-cache");
+            header("Expires: 0");
 
-            
-                // creates the headers for the excel file
-                $header_membership_type=array('Product Id:', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-                $header_purchase_type=array(NULL, 'Purchases', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-                $header_data=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
-                $header_space=array(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-            
-                // setting http headers 
-                $fp = fopen("php://output", "w");
-                header("Content-type: text/csv");
-                header("Content-disposition: csv" . date("Y-m-d") . ".csv");
-                header( "Content-disposition: filename=".$filename.".csv");
-                header("Pragma: no-cache");
-                header("Expires: 0");
+            $membership_costs = array(2574=>array('393.75', '341.25'), 3151=>array('78.75'), 4220=>array('525.00'), 3138=>array('183.75', '131.25'));
+            $cost = $membership_costs[$membership];
 
+            $purchase_type = array('393.75' => 'New', '78.75' => 'New/Renewal', '525.00' => 'New/Renewal', '183.75'=>'New', '341.25' => 'Renewal', '131.25' => 'Renewal', 0=>'Incorrect Cost');
             
-
             
+            foreach($cost as $price_tsb){
 
-                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 393.75, 0, 0);            
+                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, $price_tsb, 0, 0);            
                 $result_new = $wpdb->get_results($query_new, ARRAY_A);
-                // fills the excel file
-                fputcsv( $fp, $header_membership_type);
-                fputcsv( $fp, $header_purchase_type);
-                fputcsv( $fp, $header_data);        
-                if(!empty($result_new)){
-                    foreach ( $result_new as $row ) {
-                        fputcsv( $fp, $row );
-                    }
-                }
-                fputcsv( $fp, $header_space);
-                fputcsv( $fp, $header_space);             
-           
+                create_csv($membership, $result_new,$fp, $price_tsb, $purchase_type[$price_tsb]);
+               
+            }
 
-            // if(count($cost)===2){
-            //     $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, $cost[0], $cost[1]);
-            //     $result_new = $wpdb->get_results($query_new, ARRAY_A);
-            //     create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);                
-            // }  
+            if(count($cost)===2){
+                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, $cost[0], $cost[1]);
+                $result_new = $wpdb->get_results($query_new, ARRAY_A);
+                create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);
+                
+            }  
             
-            // elseif(count($cost)===1){
-            //     $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, 0, $cost[0]);
-            //     $result_new = $wpdb->get_results($query_new, ARRAY_A);
-            //     create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);               
-            // }
+            elseif(count($cost)===1){
+                $query_new = get_wc_export_query_hsb($prefix_hsb, $membership, $from_date_hsb, $to_date_hsb, 0, 0, $cost[0]);
+                $result_new = $wpdb->get_results($query_new, ARRAY_A);
+                create_csv($membership, $result_new,$fp, '-', $purchase_type[0]);
+               
+            }
          
             exit;
         }
