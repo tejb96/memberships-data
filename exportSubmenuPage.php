@@ -2,23 +2,23 @@
     require_once(dirname(__FILE__)."/queriesHSB.php");
 
  
-    function create_csv($memb, $result,$fp){
+    function create_csv($membership_type_md, $query_result,$f){
         // creates the headers for the excel file
-        $header_membership_type=array('Product Id:', $memb, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        $header_membership_type=array('Product Id:', $membership_type_md, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         $header_purchase_type=array(NULL, 'Purchases', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         $header_data=array('ID', 'Last Name', 'First Name', 'Display Name', 'Email', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Country', 'Phone', 'Paid Date', 'Payment Method', 'Order Total');
         $header_space=array(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         // fills the excel file
-        fputcsv( $fp, $header_membership_type);
-        fputcsv( $fp, $header_purchase_type);
-        fputcsv( $fp, $header_data);        
-        if(!empty($result)){
-            foreach ( $result as $row ) {
-                fputcsv( $fp, $row );
+        fputcsv( $f, $header_membership_type);
+        fputcsv( $f, $header_purchase_type);
+        fputcsv( $f, $header_data);        
+        if(!empty($query_result)){
+            foreach ( $query_result as $row ) {
+                fputcsv( $f, $row );
             }
         }
-        fputcsv( $fp, $header_space);
-        fputcsv( $fp, $header_space);
+        fputcsv( $f, $header_space);
+        fputcsv( $f, $header_space);
     }
     
     function membership_data_download_csv_hsb(){
