@@ -12,7 +12,7 @@ require_once(dirname(__FILE__)."/exportSubmenuPage.php");
 add_action('admin_menu', "add_admin_menu_item_membership_summary_plugin_hsb");
 
 function add_admin_menu_item_membership_summary_plugin_hsb(){
-    add_menu_page( 'Memberships Data', //page title
+    add_menu_page( 'Export Membership Data', //page title
     'Membership Data', //menu title
     'manage_options', //capability
     'export_csv_submenuslug_hsb', //parent slug
@@ -22,11 +22,11 @@ function add_admin_menu_item_membership_summary_plugin_hsb(){
     
 }
 
-add_action('admin_enqueue_scripts', 'enqueue_style_table_page_hsb');
-function enqueue_style_table_page_hsb($hook){
+add_action('admin_enqueue_scripts', 'enqueue_script_export_submenu_hsb');
+function enqueue_script_export_submenu_hsb($hook){
     if('toplevel_page_export_csv_submenuslug_hsb' === $hook){
         wp_enqueue_script('quarterButtons_jsfile_hsb', plugins_url("js/quarterButtonshsb.js", __FILE__));
-        wp_enqueue_style('table_styles_hsb', plugins_url("/css/exporthsb.css", __FILE__));
+        wp_enqueue_style('export_styles_hsb', plugins_url("/css/exporthsb.css", __FILE__));
     }
 }
 
